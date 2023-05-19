@@ -1,0 +1,25 @@
+#!/bin/sh
+exec tail -n +3 $0
+# This file provides an easy way to add custom menu entries.  Simply type the
+# menu entries you want to add after this comment.  Be careful not to change
+# the 'exec tail' line above.
+
+menuentry 'Gentoo GNU/Linux (AUTO-UPDATE)' --class gentoo --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-simple-b8380f3f-c5bd-41cd-9c22-7dd5505c7b77' {
+        load_video
+        if [ "x$grub_platform" = xefi ]; then
+                set gfxpayload=keep
+        fi
+        insmod gzio
+        insmod part_gpt
+        insmod fat
+        set root='hd0,gpt1'
+        if [ x$feature_platform_search_hint = xy ]; then
+          search --no-floppy --fs-uuid --set=root --hint-bios=hd0,gpt1 --hint-efi=hd0,gpt1 --hint-baremetal=ahci0,gpt1  E5BB-CBFE
+        else
+          search --no-floppy --fs-uuid --set=root E5BB-CBFE
+        fi
+        echo    'Loading Linux x.x.x-gentoo-dist ...'
+        linux   /vmlinuz-x.x.x-gentoo-dist root=UUID=b8380f3f-c5bd-41cd-9c22-7dd5505c7b77 ro -update_portage  
+        echo    'Loading initial ramdisk ...'
+        initrd  /initramfs-x.x.x-gentoo-dist.img
+}
