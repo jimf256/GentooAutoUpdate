@@ -1,4 +1,4 @@
-#!/root/update_portage/env/bin/python
+#!env/bin/python
 import time
 import datetime
 import os.path
