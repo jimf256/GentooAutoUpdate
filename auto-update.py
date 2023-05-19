@@ -20,7 +20,7 @@ log_file = os.path.join(script_dir, f'log.txt')
 
 def Log(text, stdout=True):
     if not quiet and stdout:
-        print(f'   update_portage: {text}')
+        print(f'   auto-update: {text}')
     with open(log_file, 'a') as f:
         f.write(text.strip() + '\n')
 

@@ -1,5 +1,5 @@
 #!/sbin/openrc-run
-command=/root/update_portage/update_portage.py
+command=/opt/auto-update/auto-update.py
 command_args="-quiet"
 pidfile="/run/${RC_SVCNAME}.pid"
 #command_background=true
