@@ -6,9 +6,9 @@
 
 echo "updating custom grub option..."
 
-old_ver="$(cat /etc/grub.d/40_custom | grep vmlinuz | sed 's/.*vmlinuz-\(.*\) root.*/\1/')"
+old_ver="$(cat /etc/grub.d/40_custom_auto-update | grep vmlinuz | sed 's/.*vmlinuz-\(.*\) root.*/\1/')"
 new_ver="$(readlink -n /usr/src/linux | cut -c 7-)"
 echo "old kernel version: $old_ver"
 echo "new kernel version: $new_ver"
 
-sed -i "s/$old_ver/$new_ver/" /etc/grub.d/40_custom
+sed -i "s/$old_ver/$new_ver/" /etc/grub.d/40_custom_auto-update
