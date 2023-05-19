@@ -66,7 +66,7 @@ else:
 params = RunProc('cat /proc/cmdline', stdout=False)
 
 # check for parameter
-param = '-update_portage'
+param = '-auto_update'
 if params and param not in params:
     Log(f'boot param: {param} not found')
     sys.exit(0)
