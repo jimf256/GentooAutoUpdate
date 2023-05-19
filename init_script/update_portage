@@ -1,0 +1,9 @@
+#!/sbin/openrc-run
+command=/root/update_portage/update_portage.py
+command_args="-quiet"
+pidfile="/run/${RC_SVCNAME}.pid"
+#command_background=true
+
+depend() {
+	need net-online
+}
