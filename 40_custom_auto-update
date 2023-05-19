@@ -1,3 +1,7 @@
+#!/bin/sh
+exec tail -n +3 $0
+
+# custom menu entry
 menuentry 'Gentoo GNU/Linux (AUTO-UPDATE)' --class gentoo --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-simple-b8380f3f-c5bd-41cd-9c22-7dd5505c7b77' {
         load_video
         if [ "x$grub_platform" = xefi ]; then
