@@ -15,8 +15,3 @@ cp -r "$script_dir/env" "$run_dir/"
 
 # run the python script
 $run_dir/env/bin/python $run_dir/auto-update.py -quiet
-
-# clean up temp directory
-if [ -d "$run_dir" ]; then
-	rm -r "$run_dir"
-fi
