@@ -7,13 +7,17 @@ import sys
 import discord
 import logging
 
-# check if logging to stdout is disabled on the commandline
+# cache script directory, install directory defaults to script directory
+script_dir = os.path.abspath(os.path.dirname(__file__))
+install_dir = script_dir
+
+# if there is a commandline parameter, we use this as the install directory and also
+# disable logging to stdout (we're likely running from boot in this case)
 quiet = False
-if len(sys.argv) > 1 and sys.argv[1].strip() == '-quiet':
+if len(sys.argv) > 1:
+    install_dir = sys.argv[1].strip()
     quiet = True
 
-# cache script directory
-script_dir = os.path.abspath(os.path.dirname(__file__))
 # cache today's date timestamp and logfile path
 timestamp = datetime.date.strftime(datetime.date.today(), "%d-%m-%Y")
 log_file = os.path.join(script_dir, f'log.txt')
@@ -45,7 +49,8 @@ def RunProc(cmd, stdout=True):
 DeleteLog()
 Log(f'', stdout=False)
 Log(f'started update for {timestamp}', stdout=False)
-Log(f'running from {script_dir}', stdout=False)
+Log(f'script directory: {script_dir}', stdout=False)
+Log(f'install directory: {install_dir}', stdout=False)
 
 # load discord secrets from config file
 discord_bot_token=''
@@ -78,7 +83,7 @@ quiet = False
 # check for last_update.txt, and if found check its contents and
 # compare the date to see if an update has already taken place today or not
 needs_update = True
-timestamp_file = os.path.join(script_dir, 'last_update.txt')
+timestamp_file = os.path.join(install_dir, 'last_update.txt')
 Log('checking if automatic update is necessary...')
 if os.path.isfile(timestamp_file):
     with open(timestamp_file, 'r') as f:
