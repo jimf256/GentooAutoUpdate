@@ -1,4 +1,4 @@
-#!/opt/auto-update/env/bin/python
+#!env/bin/python
 import time
 import datetime
 import os.path
