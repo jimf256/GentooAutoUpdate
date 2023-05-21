@@ -57,6 +57,8 @@ discord_bot_token=''
 discord_channel_id=''
 with open('/etc/auto-update.conf', 'r') as f:
     for line in [x.strip() for x in f.readlines()]:
+        if line.startswith('#'):
+          continue
         if line.startswith('channel_id: '):
             discord_channel_id = int(line[len('channel_id: '):])
         elif line.startswith('bot_token: '):
