@@ -113,7 +113,7 @@ Log('new timestamp file written')
 # run emaint sync
 RunProc('emaint sync --auto')
 # run emerge command with --pretend to get package output
-packages = RunProc('emerge --pretend --verbose --update --deep --newuse @world')
+packages = RunProc('emerge --pretend --verbose --update --deep --changed-use @world')
 if 'Total: 0 packages, Size of downloads: 0 KiB' in packages:
     Log('no packages needed updating')
 else:
