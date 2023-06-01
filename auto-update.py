@@ -23,11 +23,12 @@ if len(sys.argv) > 1:
 timestamp = datetime.date.strftime(datetime.date.today(), "%d-%m-%Y")
 log_file = os.path.join(script_dir, f'log.txt')
 
-def Log(text, stdout=True):
+def Log(text, stdout=True, logout=True):
     if not quiet and stdout:
         print(f'   auto-update: {text}')
-    with open(log_file, 'a') as f:
-        f.write(text.strip() + '\n')
+    if logout:
+        with open(log_file, 'a') as f:
+            f.write(text.strip() + '\n')
 
 def DeleteLog():
     if os.path.isfile(log_file):
@@ -38,13 +39,13 @@ def Shutdown():
     Log('auto-update finished!')
     Log('poweroff in 60 seconds...')
 
-def RunProc(cmd, stdout=True):
+def RunProc(cmd, stdout=True, logout=True):
     Log(f'running cmd: "{cmd}"', stdout)
     proc = subprocess.run(cmd, capture_output=True, shell=True, text=True)
     output = proc.stdout.strip()
-    Log('------------ output start ------------', stdout)
-    Log(output, stdout)
-    Log('------------ output end --------------', stdout)
+    Log('------------ output start ------------', stdout, logout)
+    Log(output, stdout, logout)
+    Log('------------ output end --------------', stdout, logout)
     return output
 
 DeleteLog()
@@ -112,7 +113,7 @@ with open(timestamp_file, 'w') as f:
 Log('new timestamp file written')
 
 # run emaint sync
-RunProc('emaint sync --auto')
+RunProc('emaint sync --auto', logout=False)
 # run emerge command with --pretend to get package output
 packages = RunProc('emerge --pretend --verbose --update --deep --changed-use @world')
 if 'Total: 0 packages, Size of downloads: 0 KiB' in packages:
