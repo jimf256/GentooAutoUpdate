@@ -151,13 +151,12 @@ async def on_ready():
     channel = client.get_channel(discord_channel_id)
     if channel:
         try:
-            txt = '**Gentoo-Auto-Update:**\n```{packages}```'
+            txt = f'**Gentoo-Auto-Update:**\n```{packages}```'
             if len(txt) < 2000:
                 await channel.send(txt, file=discord.File(log_file))
             else:
                 await channel.send('**Gentoo-Auto-Update:**\nsee log file...', file=discord.File(log_file))
-                await client.close()
-        except:
+        finally:
             await client.close()
 
 # log in and run the discord bot
