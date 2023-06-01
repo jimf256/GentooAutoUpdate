@@ -141,21 +141,24 @@ else:
 client = discord.Client(intents=intents, log_handler=log_handler)
 channel = None
 
+# save a copy of the log to the install directory if we get this far
+shutil.copyfile(log_file, os.path.join(install_dir, 'previous_log.txt'))
+
 # bot: initialization
 @client.event
 async def on_ready():
     global channel
     channel = client.get_channel(discord_channel_id)
     if channel:
-    try:
-        txt = '**Gentoo-Auto-Update:**\n```{packages}```'
-        if len(txt) < 2000:
-            await channel.send(txt, file=discord.File(log_file))
-        else:
-            await channel.send('**Gentoo-Auto-Update:**\nsee log file...', file=discord.File(log_file))
+        try:
+            txt = '**Gentoo-Auto-Update:**\n```{packages}```'
+            if len(txt) < 2000:
+                await channel.send(txt, file=discord.File(log_file))
+            else:
+                await channel.send('**Gentoo-Auto-Update:**\nsee log file...', file=discord.File(log_file))
+                await client.close()
+        except:
             await client.close()
-    except:
-        shutil.copyfile(log_file, os.path.join(install_dir, 'backup_log.txt'))
 
 # log in and run the discord bot
 client.run(discord_bot_token)
