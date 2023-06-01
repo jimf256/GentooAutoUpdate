@@ -1,6 +1,7 @@
 #!env/bin/python
 import time
 import datetime
+import shutil
 import os.path
 import subprocess
 import sys
@@ -146,8 +147,15 @@ async def on_ready():
     global channel
     channel = client.get_channel(discord_channel_id)
     if channel:
-        await channel.send(f'**Gentoo-Auto-Update:**\n```{packages}```', file=discord.File(log_file))
-        await client.close()
+    try:
+        txt = '**Gentoo-Auto-Update:**\n```{packages}```'
+        if len(txt) < 2000:
+            await channel.send(txt, file=discord.File(log_file))
+        else:
+            await channel.send('**Gentoo-Auto-Update:**\nsee log file...', file=discord.File(log_file))
+            await client.close()
+    except:
+        shutil.copyfile(log_file, os.path.join(install_dir, 'backup_log.txt'))
 
 # log in and run the discord bot
 client.run(discord_bot_token)
