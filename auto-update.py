@@ -120,7 +120,7 @@ if 'Total: 0 packages, Size of downloads: 0 KiB' in packages:
     Log('no packages needed updating')
 else:
     # run emerge with --quiet
-    RunProc('emerge --quiet --update --deep --newuse @world')
+    RunProc('emerge --quiet --update --deep --changed-use @world')
     # run emerge --depclean with --pretend (still must be done manually)
     RunProc('emerge --pretend --depclean')
     # run eclean-dist
