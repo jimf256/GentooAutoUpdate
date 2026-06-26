@@ -54,9 +54,10 @@ Log(f'started update for {timestamp}', stdout=False)
 Log(f'script directory: {script_dir}', stdout=False)
 Log(f'install directory: {install_dir}', stdout=False)
 
-# load discord secrets from config file
+# load discord secrets and optional post-emerge script to run from config file
 discord_bot_token=''
 discord_channel_id=''
+post_emerge_script=''
 with open('/etc/auto-update.conf', 'r') as f:
     for line in [x.strip() for x in f.readlines()]:
         if line.startswith('#'):
@@ -65,6 +66,8 @@ with open('/etc/auto-update.conf', 'r') as f:
             discord_channel_id = int(line[len('channel_id: '):])
         elif line.startswith('bot_token: '):
             discord_bot_token = line[len('bot_token: '):]
+        elif line.startswith('post_emerge_script: '):
+            post_emerge_script = line[len('post_emerge_script: '):]
 if discord_bot_token == '' or discord_channel_id == '':
     Log(f'failed to load discord channel id/bot token from /etc/auto-update.conf')
     sys.exit(0)
@@ -127,6 +130,9 @@ else:
     RunProc('eclean-dist --deep')
     # run eclean-pkg
     RunProc('eclean-pkg --deep')
+    # run post-emerge-script if set
+    if post_emerge_script and os.path.isfile(post_emerge_script):
+        RunProc(post_emerge_script)
 
 # create the discord client
 intents = discord.Intents.default()
