@@ -59,6 +59,7 @@ discord_bot_token=''
 discord_channel_id=''
 post_emerge_script=''
 with open('/etc/auto-update.conf', 'r') as f:
+    Log('reading /etc/auto-update.conf...')
     for line in [x.strip() for x in f.readlines()]:
         if line.startswith('#'):
           continue
@@ -68,6 +69,7 @@ with open('/etc/auto-update.conf', 'r') as f:
             discord_bot_token = line[len('bot_token: '):]
         elif line.startswith('post_emerge_script: '):
             post_emerge_script = line[len('post_emerge_script: '):]
+            Log(f'post_emerge_script set to: {post_emerge_script}')
 if discord_bot_token == '' or discord_channel_id == '':
     Log(f'failed to load discord channel id/bot token from /etc/auto-update.conf')
     sys.exit(0)
